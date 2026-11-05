@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bleecker Counting House</title>
+<meta name="description" content="Reporting, data and operational systems for established firms. Bleecker Street, New York.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a single framed sheet, like a card stock page with a silver double rule; views switch inside the frame. */
+:root {
+  --ground: #F2F4F5;
+  --sheet: #F6F7F8;
+  --ink: #1E2328;
+  --ink-2: #3E4650;
+  --muted: #59626C;
+  --silver: #A9B0B7;
+  --rule: #CDD2D7;
+  --hi: rgba(255,255,255,0.95);
+  --lo: rgba(30,35,40,0.34);
+  --emboss: #EDEFF1;
+  --btn-fg: #F2F4F5;
+  --serif: 'EB Garamond', Garamond, 'Iowan Old Style', 'Times New Roman', serif;
+}
+:root { color-scheme: light; } /* single light look by choice: cool pale card stock in every theme */
+
+body { background: var(--ground); color: var(--ink); font-family: var(--serif); font-size: 19px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px; }
+a { color: var(--ink); text-underline-offset: 3px; text-decoration-color: var(--silver); }
+a:hover { text-decoration-color: var(--ink); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.frame { max-width: 1080px; margin: 0 auto; border: 1px solid var(--silver); padding: 6px; background: var(--sheet); }
+.inner { border: 0.5px solid var(--rule); padding-inline: clamp(18px, 5vw, 64px); }
+
+.smallcaps { font-variant: small-caps; letter-spacing: 0.14em; }
+.eyebrow { font-variant: small-caps; letter-spacing: 0.22em; color: var(--muted); font-size: 0.85rem; margin: 0; }
+.emboss { color: var(--emboss); text-shadow: -1px -1px 0 var(--lo), 1px 1px 0 var(--hi), 0 0 1px var(--lo); }
+
+header.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 28px; padding-block: 28px; border-bottom: 1px solid var(--rule); }
+.mark { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.seal { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--silver); display: grid; place-items: center; font-size: 15px; letter-spacing: 0.06em; flex: none; }
+.mark-name { font-size: 1.15rem; font-variant: small-caps; letter-spacing: 0.12em; }
+nav.main ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 26px; font-variant: small-caps; letter-spacing: 0.1em; font-size: 1rem; }
+nav.main a { text-decoration: none; padding-block: 10px; display: inline-block; color: var(--muted); }
+nav.main a[aria-current="page"] { color: var(--ink); border-bottom: 1px solid var(--ink); }
+
+section.view { padding-block: 64px 72px; }
+h1, h2, h3 { font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); line-height: 1.12; }
+h2 { font-size: clamp(1.7rem, 3.5vw, 2.25rem); line-height: 1.2; }
+h3 { font-size: 1.4rem; font-weight: 500; }
+p { margin: 0; }
+.lede { font-size: 1.15rem; color: var(--ink-2); max-width: 36em; }
+.prose { max-width: 36em; display: grid; gap: 16px; color: var(--ink-2); }
+.stack { display: grid; gap: 20px; }
+.center { text-align: center; justify-items: center; }
+.center .lede { margin-inline: auto; }
+
+.hero { display: grid; gap: 20px; justify-items: center; text-align: center; padding-block: 24px 56px; border-bottom: 1px solid var(--rule); }
+.hero .big-seal { font-size: clamp(64px, 12vw, 104px); line-height: 1; letter-spacing: 0.06em; }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 12px; }
+.btn { display: inline-block; min-height: 44px; box-sizing: border-box; padding: 10px 28px; border: 1px solid var(--ink); text-decoration: none; font-variant: small-caps; letter-spacing: 0.1em; font-size: 1rem; }
+.btn.solid { background: var(--ink); color: var(--btn-fg); }
+.btn.line { border-color: var(--silver); }
+
+.block { padding-block: 56px; border-bottom: 1px solid var(--rule); display: grid; gap: 32px; }
+.block:last-child { border-bottom: 0; }
+.head { display: grid; gap: 10px; }
+
+/* Four practice areas, two by two */
+.quad { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); column-gap: 56px; }
+.area { padding-block: 22px; border-top: 1px solid var(--rule); display: grid; gap: 10px; align-content: start; min-width: 0; }
+.numeral { font-size: 0.9rem; letter-spacing: 0.18em; color: var(--muted); }
+.area p { color: var(--ink-2); font-size: 1.02rem; }
+
+/* Specimen report */
+.specimen { border: 1px solid var(--silver); padding: 6px; max-width: 760px; width: 100%; justify-self: center; }
+.specimen-inner { border: 0.5px solid var(--rule); padding: clamp(16px, 4vw, 32px); display: grid; gap: 18px; }
+.spec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 20px; border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+.spec-title { font-size: 1.25rem; }
+.spec-meta { font-size: 0.85rem; color: var(--muted); font-variant: small-caps; letter-spacing: 0.12em; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums lining-nums; font-size: 1rem; }
+th { text-align: left; font-weight: 400; font-variant: small-caps; letter-spacing: 0.1em; color: var(--muted); font-size: 0.85rem; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--rule); }
+td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.n, th.n { text-align: right; padding-right: 0; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+.flag { font-style: italic; color: var(--ink-2); }
+.spec-note { font-size: 0.9rem; color: var(--muted); font-style: italic; }
+
+.list { list-style: none; margin: 0; padding: 0; max-width: 40em; }
+.list li { padding: 14px 0; border-top: 1px solid var(--rule); color: var(--ink-2); }
+.list li:last-child { border-bottom: 1px solid var(--rule); }
+.list b { font-weight: 500; color: var(--ink); }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 32px 56px; align-items: start; }
+.two > * { min-width: 0; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 40px; }
+.step { display: grid; gap: 8px; align-content: start; }
+.step .when { font-variant: small-caps; letter-spacing: 0.14em; color: var(--muted); font-size: 0.9rem; }
+.step p { color: var(--ink-2); font-size: 1.02rem; }
+.step-n { font-size: 2.4rem; color: var(--silver); line-height: 1; }
+
+.contact { display: grid; gap: 22px; justify-items: center; text-align: center; }
+.address-card { border: 1px solid var(--silver); padding: 6px; }
+.address-card > div { border: 0.5px solid var(--rule); padding: 24px clamp(20px, 5vw, 48px); display: grid; gap: 8px; }
+.copy-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
+.addr { font-size: 1.25rem; user-select: all; }
+.copy { font: inherit; font-variant: small-caps; letter-spacing: 0.1em; font-size: 0.95rem; background: none; color: var(--ink); border: 1px solid var(--silver); padding: 6px 16px; min-height: 40px; cursor: pointer; }
+.copied { font-size: 0.9rem; color: var(--muted); min-height: 1.4em; }
+
+footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; padding-block: 24px; border-top: 1px solid var(--rule); font-variant: small-caps; letter-spacing: 0.12em; font-size: 0.9rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+
+<div class="frame">
+<div class="inner">
+
+<header class="top">
+  <a class="mark" href="#home" aria-label="Bleecker Counting House, home">
+    <span class="seal emboss" aria-hidden="true">BCH</span>
+    <span class="mark-name">Bleecker Counting House</span>
+  </a>
+  <nav class="main" aria-label="Main">
+    <ul>
+      <li><a href="#practice" data-view="practice">Practice</a></li>
+      <li><a href="#engagement" data-view="engagement">Engagement</a></li>
+      <li><a href="#about" data-view="about">About</a></li>
+      <li><a href="#inquiries" data-view="inquiries">Inquiries</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section class="view" id="view-home" data-name="home" aria-label="Home">
+  <div class="hero">
+    <div class="big-seal emboss" aria-hidden="true">BCH</div>
+    <p class="eyebrow">Data &amp; reporting · Bleecker Street, New York</p>
+    <h1>Reporting, data and operational systems for established firms</h1>
+    <p class="lede">We consolidate a firm's accounting, project and client records, issue periodic reports from them, and build supporting systems for routine work. All reported figures are reconciled to the general ledger.</p>
+    <div class="actions">
+      <a class="btn solid" href="#inquiries">Inquiries</a>
+      <a class="btn line" href="#practice">Practice</a>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="head center">
+      <p class="eyebrow">Practice</p>
+      <h2>Areas of work</h2>
+    </div>
+    <div class="quad">
+      <div class="area">
+        <span class="numeral">I.</span>
+        <h3>Consolidation</h3>
+        <p>Accounting, client and operational records combined into one consistent source, with duplicates and gaps resolved.</p>
+      </div>
+      <div class="area">
+        <span class="numeral">II.</span>
+        <h3>Recurring reports</h3>
+        <p>Weekly or monthly reports on cash, profitability by job or client, and receivables, reconciled to the books before issue.</p>
+      </div>
+      <div class="area">
+        <span class="numeral">III.</span>
+        <h3>Analysis</h3>
+        <p>Fixed-scope studies of a single question: pricing, estimate accuracy, lead performance, margin by line of work.</p>
+      </div>
+      <div class="area">
+        <span class="numeral">IV.</span>
+        <h3>Operational systems</h3>
+        <p>Systems built on the firm's existing software, including project archives, estimate verification and scheduled administrative tasks.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="head center">
+      <p class="eyebrow">Specimen</p>
+      <h2>A weekly position, as issued</h2>
+      <p class="lede">An excerpt from a weekly report for a specialty contractor. Figures are illustrative.</p>
+    </div>
+    <div class="specimen">
+      <div class="specimen-inner">
+        <div class="spec-head">
+          <span class="spec-title">Weekly position</span>
+          <span class="spec-meta">Week ending 6 November · reconciled to ledger</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th class="n">This week</th><th class="n">Prior week</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>Cash on hand</td><td class="n">$412,800</td><td class="n">$455,300</td><td></td></tr>
+              <tr><td>Receivables over 60 days</td><td class="n">$188,400</td><td class="n">$171,900</td><td class="flag">Two progress bills unpaid; owners notified</td></tr>
+              <tr><td>Retainage held by clients</td><td class="n">$1,064,000</td><td class="n">$1,064,000</td><td class="flag">Three releases due on completed work</td></tr>
+              <tr><td>Work complete, not yet invoiced</td><td class="n">$57,600</td><td class="n">$23,100</td><td class="flag">Change order on project 2417</td></tr>
+              <tr><td>Lowest projected cash, next 13 weeks</td><td class="n">$96,000</td><td class="n">$118,000</td><td class="flag">Week of 7 December</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="spec-note">Every figure is checked against the general ledger before the report is issued. A failed check holds the report.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="two">
+      <div class="stack">
+        <p class="eyebrow">Clients</p>
+        <h2>Firms of ten to two hundred people without an internal data function</h2>
+        <p class="lede">Most run on a combination of accounting software, industry systems and spreadsheets.</p>
+      </div>
+      <ul class="list">
+        <li>Contractors and specialty trades</li>
+        <li>Restoration and conservation firms</li>
+        <li>Property managers</li>
+        <li>Restaurant and hospitality groups</li>
+        <li>Bookkeeping firms adding reporting for their clients</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section class="view" id="view-practice" data-name="practice" aria-label="Practice" hidden>
+  <div class="stack">
+    <p class="eyebrow">Practice</p>
+    <h1>Practice areas</h1>
+    <p class="lede">Each area can be engaged on its own. Most clients begin with consolidation, because the others depend on it.</p>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><span class="numeral">I.</span><h2>Consolidation</h2></div>
+      <div class="prose">
+        <p>Most firms keep the same project, client or job in several places: the accounting system, one or more client databases, and spreadsheets kept by individual staff. We match these records, resolve the differences, and maintain a single consistent source that updates automatically.</p>
+        <p><b>Typical outputs:</b> a reconciliation of every open project across systems; a list of missing or conflicting records with the value at stake; a clean, connected source for reporting.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><span class="numeral">II.</span><h2>Recurring reports</h2></div>
+      <div class="prose">
+        <p>Reports are issued on a fixed schedule, drawn directly from the client's systems and checked against the books before issue. They cover what owners and finance leads need each week: cash position, receivables, work not yet invoiced, and profitability by job, client or line of work.</p>
+        <p><b>Typical outputs:</b> a weekly position; a monthly profitability report; a rolling thirteen-week cash forecast; alerts when a figure moves outside agreed limits.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><span class="numeral">III.</span><h2>Analysis</h2></div>
+      <div class="prose">
+        <p>Fixed-scope studies answer a single question with the firm's own history. The most common is pricing: comparing estimates with actual costs across past jobs to find the kinds of work that are consistently under- or over-priced.</p>
+        <p><b>Typical outputs:</b> estimate accuracy by type of work; margin by client and sector; return on each source of new business; a written finding with recommended changes.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><span class="numeral">IV.</span><h2>Operational systems</h2></div>
+      <div class="prose">
+        <p>We build systems for recurring administrative work and for access to the firm's project history. They draw on the same consolidated records as the reports.</p>
+        <ul class="list">
+          <li><b>Project archive.</b> Past projects indexed by building type, material, treatment, client and outcome, for reference in pricing and proposals.</li>
+          <li><b>Estimate verification.</b> Estimates recorded in the CRM compared with their supporting documents, with discrepancies referred for review.</li>
+          <li><b>Proposal materials.</b> Qualification and past-performance sections prepared from the archive for staff review.</li>
+          <li><b>Scheduled tasks.</b> Invoice and retainage notices, change-order tracking and owner statements.</li>
+          <li><b>Field records.</b> Applications for site staff to record hours, materials and photographs against a project.</li>
+        </ul>
+        <p>Where possible, systems are built on software the firm already licenses, and are maintained under the monthly engagement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGAGEMENT -->
+<section class="view" id="view-engagement" data-name="engagement" aria-label="Engagement" hidden>
+  <div class="stack">
+    <p class="eyebrow">Engagement</p>
+    <h1>Assessment, build, operation</h1>
+    <p class="lede">Engagements follow the same three stages. Each stage is priced before it begins.</p>
+  </div>
+  <div class="block">
+    <div class="steps">
+      <div class="step">
+        <span class="step-n">1</span>
+        <h3>Assessment</h3>
+        <span class="when">Fixed fee · one to two weeks</span>
+        <p>A review of operations and data sources, concluding with the questions the reporting is to answer and a fixed price for the build.</p>
+      </div>
+      <div class="step">
+        <span class="step-n">2</span>
+        <h3>Build</h3>
+        <span class="when">Fixed fee</span>
+        <p>Read-only connection to existing systems and delivery of the initial reports and systems.</p>
+      </div>
+      <div class="step">
+        <span class="step-n">3</span>
+        <h3>Operation</h3>
+        <span class="when">Monthly</span>
+        <p>Reports issued on schedule and systems maintained. Changes in source systems are addressed as they occur. A named principal is responsible for the engagement.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><p class="eyebrow">Terms</p><h2>Standing terms of every engagement</h2></div>
+      <ul class="list">
+        <li><b>Read-only access.</b> Connections are made through each system's authorized access. Shared passwords are not used.</li>
+        <li><b>Reconciled before issue.</b> Every report is checked against the books; a failed check holds the report.</li>
+        <li><b>Data kept where agreed.</b> Records stay in one secured environment, or inside the client's own systems, and are deleted at the end of the engagement.</li>
+        <li><b>A named principal.</b> One principal is responsible for each engagement.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><p class="eyebrow">Method</p><h2>On software and AI</h2></div>
+      <div class="prose">
+        <p>We use current software, including AI tools, in building and maintaining client systems.</p>
+        <p>Reported figures are produced by tested code and reconciled to the books; they are not generated by AI models. Client data is not used to train AI models, and this is stated in each engagement agreement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="view" id="view-about" data-name="about" aria-label="About" hidden>
+  <div class="stack">
+    <p class="eyebrow">About</p>
+    <h1>The counting house</h1>
+    <p class="lede">A counting house was the office in which a merchant's accounts were kept. The name describes the work.</p>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><p class="eyebrow">Principal</p><h2>Dexter Vandersall</h2></div>
+      <div class="prose">
+        <p>Dexter Vandersall works in research data analysis, report writing and application development, including the automated reporting and records migration that this practice is built on.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><p class="eyebrow">Location</p><h2>Bleecker Street, New York</h2></div>
+      <div class="prose">
+        <p>The practice is based in Greenwich Village and works with clients in New York and elsewhere. Most work is done remotely; meetings are held at the client's office or in New York.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INQUIRIES -->
+<section class="view" id="view-inquiries" data-name="inquiries" aria-label="Inquiries" hidden>
+  <div class="contact">
+    <p class="eyebrow">Inquiries</p>
+    <h1>Inquiries</h1>
+    <p class="lede">Engagements begin with a fixed-fee assessment. Please include a brief description of the business and the systems it uses.</p>
+    <div class="address-card">
+      <div>
+        <div class="copy-row">
+          <span class="addr" id="addr">inquiries@bleeckercountinghouse.com</span>
+          <button type="button" class="copy" id="copy-btn">Copy</button>
+        </div>
+        <p class="copied" id="copied" aria-live="polite"></p>
+        <p class="smallcaps" style="color: var(--muted); font-size: 0.95rem;">Bleecker Street, New York</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <span>Bleecker Counting House · Data &amp; Reporting</span>
+  <span>Dexter Vandersall, Principal</span>
+</footer>
+
+</div>
+</div>
+
+<script>
+(() => {
+  const names = ['home', 'practice', 'engagement', 'about', 'inquiries'];
+  const show = () => {
+    const h = location.hash.slice(1);
+    const name = names.includes(h) ? h : 'home';
+    document.querySelectorAll('section.view').forEach((s) => { s.hidden = s.dataset.name !== name; });
+    document.querySelectorAll('nav.main a').forEach((a) => {
+      if (a.dataset.view === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    if (h && names.includes(h)) window.scrollTo(0, 0);
+  };
+  window.addEventListener('hashchange', show);
+  show();
+
+  const btn = document.getElementById('copy-btn');
+  const out = document.getElementById('copied');
+  const addr = document.getElementById('addr');
+  btn.addEventListener('click', () => {
+    const text = addr.textContent.trim();
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents(addr);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      out.textContent = 'Selected. Copy with your keyboard.';
+    };
+    try {
+      navigator.clipboard.writeText(text).then(() => { out.textContent = 'Copied'; }, fallback);
+    } catch (e) { fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
