@@ -86,7 +86,35 @@ p { margin: 0; }
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums lining-nums; font-size: 1rem; }
 th { text-align: left; font-weight: 400; font-variant: small-caps; letter-spacing: 0.1em; color: var(--muted); font-size: 0.85rem; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--rule); }
 td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
-td.n, th.n { text-align: right; padding-right: 0; white-space: nowrap; }
+td.n, th.n { text-align: right; padding-left: 24px; padding-right: 0; white-space: nowrap; }
+td.sub { padding-left: 1.2em; color: var(--ink-2); }
+.rep-sec { display: grid; gap: 8px; }
+.rep-h { font-variant: small-caps; letter-spacing: 0.12em; font-size: 0.9rem; color: var(--muted); }
+.spec-firm { display: grid; gap: 0; line-height: 1.35; }
+.rep-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px 36px; }
+.rep-charts figure { margin: 0; }
+.rep-charts svg { width: 100%; height: auto; display: block; font-family: var(--serif); }
+.cg { stroke: var(--rule); stroke-width: 0.6; }
+.ct { fill: var(--muted); font-size: 10px; }
+.ct2 { fill: var(--ink-2); font-size: 11px; }
+.cv { fill: var(--ink); font-size: 11px; }
+.cl { fill: none; stroke: var(--ink-2); stroke-width: 1.6; stroke-linejoin: round; }
+.cd { fill: var(--ink-2); stroke: var(--sheet); stroke-width: 1.5; }
+.cb { fill: var(--muted); }
+.ctg { stroke: var(--ink); stroke-width: 0.8; stroke-dasharray: 3 3; }
+.hit:hover .cd, .hit:hover .cb { fill: var(--ink); }
+.specimen table { font-size: 0.88rem; }
+.specimen th { font-size: 0.78rem; padding-block: 4px; }
+.specimen td { padding-block: 4px; }
+.specimen .attn { font-size: 0.95rem; gap: 6px; }
+
+.attn { font-size: 1rem; line-height: 1.5; }
+@media (max-width: 560px) {
+  .specimen table th:nth-child(3), .specimen table td:nth-child(3) { display: none; }
+  td.n, th.n { padding-left: 14px; }
+}
+.attn { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; color: var(--ink-2); }
+.attn li { padding-left: 6px; }
 tr:last-child td { border-bottom: 0; }
 .flag { font-style: italic; color: var(--ink-2); }
 .spec-note { font-size: 0.9rem; color: var(--muted); font-style: italic; }
@@ -182,35 +210,6 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
   </div>
 
   <div class="block">
-    <div class="head center">
-      <p class="eyebrow">Specimen</p>
-      <h2>A weekly position, as issued</h2>
-      <p class="lede">An excerpt from a weekly report for a specialty contractor. Figures are illustrative.</p>
-    </div>
-    <div class="specimen">
-      <div class="specimen-inner">
-        <div class="spec-head">
-          <span class="spec-title">Weekly position</span>
-          <span class="spec-meta">Week ending 6 November · reconciled to ledger</span>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Item</th><th class="n">This week</th><th class="n">Prior week</th><th>Note</th></tr></thead>
-            <tbody>
-              <tr><td>Cash on hand</td><td class="n">$412,800</td><td class="n">$455,300</td><td></td></tr>
-              <tr><td>Receivables over 60 days</td><td class="n">$188,400</td><td class="n">$171,900</td><td class="flag">Two progress bills unpaid; owners notified</td></tr>
-              <tr><td>Retainage held by clients</td><td class="n">$1,064,000</td><td class="n">$1,064,000</td><td class="flag">Three releases due on completed work</td></tr>
-              <tr><td>Work complete, not yet invoiced</td><td class="n">$57,600</td><td class="n">$23,100</td><td class="flag">Change order on project 2417</td></tr>
-              <tr><td>Lowest projected cash, next 13 weeks</td><td class="n">$96,000</td><td class="n">$118,000</td><td class="flag">Week of 7 December</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="spec-note">Every figure is checked against the general ledger before the report is issued. A failed check holds the report.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="block">
     <div class="two">
       <div class="stack">
         <p class="eyebrow">Clients</p>
@@ -253,6 +252,52 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
       </div>
     </div>
   </div>
+  <div class="block">
+    <div class="head center">
+      <p class="eyebrow">Reports</p>
+      <h2>An example weekly report</h2>
+      <p class="lede">The first page of a weekly report to the owners of a three-restaurant group. The firm and its figures are fictional.</p>
+    </div>
+    <div class="specimen">
+      <div class="specimen-inner">
+        <div class="spec-head">
+          <span class="spec-firm"><span class="spec-title">Orchard Table Group</span><span>Weekly report, week ending Sunday 1 November 2026</span></span>
+          <span class="spec-meta">Issued 2 November · reconciled to deposits and ledger</span>
+        </div>
+        <div class="rep-charts">
+          <figure class="rep-sec"><figcaption class="rep-h">Net sales, last eight weeks</figcaption><svg viewBox="0 0 310 150" role="img" aria-label="Net sales by week, 13 September to 1 November: from $168.9k to $186.4k"><line x1="40" x2="300" y1="128.0" y2="128.0" class="cg"/><text x="34" y="131.5" class="ct" text-anchor="end">$160k</text><line x1="40" x2="300" y1="89.3" y2="89.3" class="cg"/><text x="34" y="92.8" class="ct" text-anchor="end">$170k</text><line x1="40" x2="300" y1="50.7" y2="50.7" class="cg"/><text x="34" y="54.2" class="ct" text-anchor="end">$180k</text><line x1="40" x2="300" y1="12.0" y2="12.0" class="cg"/><text x="34" y="15.5" class="ct" text-anchor="end">$190k</text><polyline points="40.0,93.6 77.1,80.1 114.3,88.9 151.4,66.9 188.6,45.6 225.7,64.2 262.9,53.8 300.0,25.9" class="cl"/><g class="hit"><rect x="24.0" y="12" width="32" height="116" fill="transparent"/><circle cx="40.0" cy="93.6" r="2.5" class="cd"/><title>Week ending 13 Sep: $168.9k</title></g><g class="hit"><rect x="61.1" y="12" width="32" height="116" fill="transparent"/><circle cx="77.1" cy="80.1" r="2.5" class="cd"/><title>Week ending 20 Sep: $172.4k</title></g><g class="hit"><rect x="98.3" y="12" width="32" height="116" fill="transparent"/><circle cx="114.3" cy="88.9" r="2.5" class="cd"/><title>Week ending 27 Sep: $170.1k</title></g><g class="hit"><rect x="135.4" y="12" width="32" height="116" fill="transparent"/><circle cx="151.4" cy="66.9" r="2.5" class="cd"/><title>Week ending 4 Oct: $175.8k</title></g><g class="hit"><rect x="172.6" y="12" width="32" height="116" fill="transparent"/><circle cx="188.6" cy="45.6" r="2.5" class="cd"/><title>Week ending 11 Oct: $181.3k</title></g><g class="hit"><rect x="209.7" y="12" width="32" height="116" fill="transparent"/><circle cx="225.7" cy="64.2" r="2.5" class="cd"/><title>Week ending 18 Oct: $176.5k</title></g><g class="hit"><rect x="246.9" y="12" width="32" height="116" fill="transparent"/><circle cx="262.9" cy="53.8" r="2.5" class="cd"/><title>Week ending 25 Oct: $179.2k</title></g><g class="hit"><rect x="284.0" y="12" width="32" height="116" fill="transparent"/><circle cx="300.0" cy="25.9" r="4" class="cd"/><title>Week ending 1 Nov: $186.4k</title></g><text x="40" y="144" class="ct">13 Sep</text><text x="300" y="144" class="ct" text-anchor="end">1 Nov</text><text x="292.0" y="17.9" class="cv" text-anchor="end">$186.4k</text></svg></figure>
+          <figure class="rep-sec"><figcaption class="rep-h">Prime cost by location, % of sales</figcaption><svg viewBox="0 0 310 150" role="img" aria-label="Prime cost by location, week ending 1 November: Delancey 65.1%, Fulton 63.0%, Hester 57.7%, against a 62% target"><line x1="246.3" x2="246.3" y1="6" y2="118" class="ctg"/><text x="246.3" y="134" class="ct" text-anchor="middle">Target 62%</text><g class="hit"><text x="70" y="27" class="ct2" text-anchor="end">Delancey</text><path d="M78,14 h172.7 a4,4 0 0 1 4,4 v10 a4,4 0 0 1 -4,4 h-172.7 z" class="cb"/><text x="306" y="27" class="cv" text-anchor="end">65.1%</text><title>Delancey: prime cost 65.1% of $64,000 net sales</title></g><g class="hit"><text x="70" y="63" class="ct2" text-anchor="end">Fulton</text><path d="M78,50 h167.0 a4,4 0 0 1 4,4 v10 a4,4 0 0 1 -4,4 h-167.0 z" class="cb"/><text x="306" y="63" class="cv" text-anchor="end">63.0%</text><title>Fulton: prime cost 63.0% of $72,400 net sales</title></g><g class="hit"><text x="70" y="99" class="ct2" text-anchor="end">Hester</text><path d="M78,86 h152.6 a4,4 0 0 1 4,4 v10 a4,4 0 0 1 -4,4 h-152.6 z" class="cb"/><text x="306" y="99" class="cv" text-anchor="end">57.7%</text><title>Hester: prime cost 57.7% of $50,000 net sales</title></g></svg></figure>
+        </div>
+        <div class="rep-sec">
+          <p class="rep-h">Sales and costs, all locations</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th></th><th class="n">1 Nov</th><th class="n">25 Oct</th><th class="n">Change</th></tr></thead>
+              <tbody>
+                <tr><td>Net sales</td><td class="n">$186,400</td><td class="n">$179,200</td><td class="n">+7,200</td></tr>
+                <tr><td>Covers</td><td class="n">4,912</td><td class="n">4,770</td><td class="n">+142</td></tr>
+                <tr><td>Average check</td><td class="n">$37.95</td><td class="n">$37.57</td><td class="n">+0.38</td></tr>
+                <tr><td>Food cost, % of sales</td><td class="n">30.8%</td><td class="n">29.6%</td><td class="n">+1.2 pts</td></tr>
+                <tr><td>Labor cost, % of sales</td><td class="n">31.5%</td><td class="n">32.1%</td><td class="n">&minus;0.6 pts</td></tr>
+                <tr><td>Prime cost, % of sales</td><td class="n">62.3%</td><td class="n">61.7%</td><td class="n">+0.6 pts</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="rep-sec">
+          <p class="rep-h">For attention</p>
+          <ol class="attn">
+            <li>Food cost at Delancey rose to 33.4%, from 30.1%. Three produce items were invoiced above the prices on the order guide, by $1,460 in total.</li>
+            <li>Tuesday card sales at Delancey in the register exceed the processor&rsquo;s deposit by $1,180. The general manager has been asked to review the day&rsquo;s voids and refunds.</li>
+            <li>Kitchen overtime at Fulton was 61 hours, against 12 the week before, mostly for Saturday&rsquo;s private event.</li>
+            <li>Two catering invoices totaling $8,640 are more than 30 days past due.</li>
+          </ol>
+        </div>
+        <p class="spec-note">Pages two to four cover each location, menu item margins and vendor price changes.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="block">
     <div class="two">
       <div class="stack"><span class="numeral">III.</span><h2>Analysis</h2></div>
