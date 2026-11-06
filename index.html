@@ -142,6 +142,51 @@ tr:last-child td { border-bottom: 0; }
 .copied { font-size: 0.9rem; color: var(--muted); min-height: 1.4em; }
 
 footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; padding-block: 24px; border-top: 1px solid var(--rule); font-variant: small-caps; letter-spacing: 0.12em; font-size: 0.9rem; color: var(--muted); }
+
+/* Motion: everything below only applies once the script adds html.motion (skipped for reduced motion or no script). */
+.frame, .inner { position: relative; }
+html.motion .frame { border-color: transparent; }
+html.motion .inner { border-color: transparent; }
+html.motion .frame::before, html.motion .inner::before { content: ""; position: absolute; inset: 0; pointer-events: none; animation: rule-draw 1.1s cubic-bezier(.65,0,.35,1) both; }
+html.motion .frame::before { border: 1px solid var(--silver); inset: -1px; }
+html.motion .inner::before { border: 0.5px solid var(--rule); animation-delay: .25s; }
+@keyframes rule-draw { from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); } }
+
+html.motion .reveal { opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; transition-delay: calc(var(--i, 0) * 90ms); }
+html.motion .reveal.in { opacity: 1; transform: none; }
+
+html.motion .specimen tbody tr { opacity: 0; transition: opacity .45s ease; transition-delay: calc(300ms + var(--r, 0) * 70ms); }
+html.motion .specimen.in tbody tr { opacity: 1; }
+html.motion .specimen .cl { stroke-dasharray: var(--len, 600); stroke-dashoffset: var(--len, 600); transition: stroke-dashoffset 1.4s ease .3s; }
+html.motion .specimen.in .cl { stroke-dashoffset: 0; }
+html.motion .specimen .cd { opacity: 0; transition: opacity .4s ease 1.5s; }
+html.motion .specimen.in .cd { opacity: 1; }
+html.motion .specimen .cb { transform: scaleX(0); transform-box: fill-box; transform-origin: left center; transition: transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: calc(400ms + var(--b, 0) * 120ms); }
+html.motion .specimen.in .cb { transform: none; }
+
+nav.main a { position: relative; }
+nav.main a[aria-current="page"] { border-bottom: 0; }
+nav.main a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
+nav.main a:hover::after, nav.main a[aria-current="page"]::after { transform: scaleX(1); }
+nav.main a:hover { color: var(--ink); }
+.seal { transition: transform .4s ease, text-shadow .4s ease, box-shadow .4s ease; }
+.mark:hover .seal { transform: translateY(-1px); box-shadow: 0 1px 0 var(--hi), 0 -1px 0 rgba(30,35,40,0.08) inset; text-shadow: -1px -1px 0 rgba(30,35,40,0.45), 1px 1px 0 var(--hi), 0 0 1px var(--lo); }
+.btn { transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+.btn.line:hover { border-color: var(--ink); }
+
+/* Questions */
+.faq { max-width: 44em; display: grid; }
+.faq details { border-top: 1px solid var(--rule); }
+.faq details:last-child { border-bottom: 1px solid var(--rule); }
+.faq summary { cursor: pointer; list-style: none; padding: 16px 32px 16px 0; position: relative; font-size: 1.12rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 4px; top: 14px; color: var(--muted); font-size: 1.2rem; transition: transform .3s ease; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { color: var(--ink-2); padding: 0 0 18px; max-width: 40em; }
+html.motion .faq details[open] p { animation: faq-in .35s ease; }
+@keyframes faq-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
@@ -331,6 +376,7 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
     <p class="eyebrow">Engagement</p>
     <h1>Assessment, build, operation</h1>
     <p class="lede">Engagements follow the same three stages.</p>
+    <p class="lede">Each begins with one question about the records, answered before anything is built.</p>
   </div>
   <div class="block">
     <div class="steps">
@@ -359,7 +405,21 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
         <li><b>Reconciled before issue.</b> Every report is checked against the books; a failed check holds the report.</li>
         <li><b>Data kept where agreed.</b> Records stay in one secured environment, or inside the client's own systems, and are deleted at the end of the engagement.</li>
         <li><b>A named principal.</b> One principal is responsible for each engagement.</li>
+        <li><b>Owned by the client.</b> Everything we build is documented and remains the firm's.</li>
       </ul>
+    </div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div class="stack"><p class="eyebrow">Questions</p><h2>Common questions</h2></div>
+      <div class="faq">
+        <details><summary>How does this differ from our accountant?</summary><p>An accountant keeps the books correct and files on time. We work from those books and from the operational records around them, such as estimates, jobs and timesheets, and issue reports that join the two. Many engagements run alongside the firm's accountant.</p></details>
+        <details><summary>Why not use AI tools ourselves?</summary><p>For a single question, they serve well. Recurring reporting needs connections that keep working, figures checked against the books every time, and someone responsible when a source system changes. That is the service.</p></details>
+        <details><summary>Where do our records go?</summary><p>Access is read-only. Records are held in one secured environment, or inside the firm's own systems, and deleted at the end of the engagement. Where AI tools are used, the terms exclude training on client data.</p></details>
+        <details><summary>How is the work priced?</summary><p>The assessment is a fixed fee, set once the scope is known. Ongoing work is a fixed monthly fee. There is no hourly billing.</p></details>
+        <details><summary>How does an engagement start?</summary><p>With one question about the firm's records, examined in the assessment. The written finding states what can be answered, from which records, and what it would take.</p></details>
+        <details><summary>What happens if we stop?</summary><p>Everything we build is documented and remains the firm's. Connections are handed over or closed, and any records we hold are deleted.</p></details>
+      </div>
     </div>
   </div>
 </section>
@@ -395,6 +455,7 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
   <div class="contact">
     <p class="eyebrow">Inquiries</p>
     <h1>Inquiries</h1>
+    <p class="lede">Bring one question about your records. We will say whether it can be answered, and how.</p>
     <p class="lede">Engagements begin with an assessment. Please include a brief description of the business and the systems it uses.</p>
     <div class="address-card">
       <div>
@@ -448,6 +509,21 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
       navigator.clipboard.writeText(text).then(() => { out.textContent = 'Copied'; }, fallback);
     } catch (e) { fallback(); }
   });
+  // Motion: reveal on scroll, framed rules, specimen report. Skipped entirely for reduced motion.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('motion');
+    const sel = '.hero > *, section.view > .stack, section.view > .contact > *, .block > .head, .block > .two > *, .block > .prose, .area, .step, .specimen';
+    document.querySelectorAll(sel).forEach((el) => el.classList.add('reveal'));
+    document.querySelectorAll('.quad, .steps').forEach((g) => [...g.children].forEach((c, i) => c.style.setProperty('--i', i)));
+    document.querySelectorAll('.specimen tbody').forEach((tb) => [...tb.children].forEach((tr, i) => tr.style.setProperty('--r', i)));
+    document.querySelectorAll('.specimen .cb').forEach((b, i) => b.style.setProperty('--b', i));
+    document.querySelectorAll('.specimen .cl').forEach((l) => { try { l.style.setProperty('--len', Math.ceil(l.getTotalLength())); } catch (e) {} });
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  }
 })();
 </script>
 
