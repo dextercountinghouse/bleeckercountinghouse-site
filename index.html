@@ -3,28 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Bleecker Counting House</title>
 <meta name="description" content="Reporting, data and operational systems for established firms. Bleecker Street, New York.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
 <style>
 /* Layout: a single framed sheet, like a card stock page with a silver double rule; views switch inside the frame. */
 :root {
-  --ground: #F2F4F5;
-  --sheet: #F6F7F8;
-  --ink: #1E2328;
-  --ink-2: #3E4650;
-  --muted: #59626C;
-  --silver: #A9B0B7;
-  --rule: #CDD2D7;
-  --hi: rgba(255,255,255,0.95);
-  --lo: rgba(30,35,40,0.34);
-  --emboss: #EDEFF1;
-  --btn-fg: #F2F4F5;
+  --ground: #0E1A1F;
+  --sheet: #13232B;
+  --ink: #F2F4F5;
+  --ink-2: #C6D5DA;
+  --muted: #8BA3AD;
+  --silver: #557380;
+  --rule: #263C47;
+  --rule-strong: #375361;
+  --band: #1A2E38;
+  --hi: rgba(255,255,255,0.10);
+  --lo: rgba(0,0,0,0.55);
+  --emboss: #182B34;
+  --btn-fg: #1E2328;
+  --citron: #DCE29B;
+  --bodoni: 'Bodoni Moda', 'Didot', 'Bodoni 72', serif;
   --serif: 'EB Garamond', Garamond, 'Iowan Old Style', 'Times New Roman', serif;
 }
-:root { color-scheme: light; } /* single light look by choice: cool pale card stock in every theme */
+:root { color-scheme: dark; } /* single dark look by choice: slate ground, silver rules, one citron accent */
 
 body { background: var(--ground); color: var(--ink); font-family: var(--serif); font-size: 19px; line-height: 1.55;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px; }
@@ -33,7 +40,7 @@ a:hover { text-decoration-color: var(--ink); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 .frame { max-width: 1080px; margin: 0 auto; border: 1px solid var(--silver); padding: 6px; background: var(--sheet); }
-.inner { border: 0.5px solid var(--rule); padding-inline: clamp(18px, 5vw, 64px); }
+.inner { --pad: clamp(18px, 5vw, 64px); border: 0.5px solid var(--rule); padding-inline: var(--pad); }
 
 .smallcaps { font-variant: small-caps; letter-spacing: 0.14em; }
 .eyebrow { font-variant: small-caps; letter-spacing: 0.22em; color: var(--muted); font-size: 0.85rem; margin: 0; }
@@ -42,7 +49,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
 header.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 28px; padding-block: 28px; border-bottom: 1px solid var(--rule); }
 .mark { display: flex; align-items: center; gap: 14px; text-decoration: none; }
 .seal { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--silver); display: grid; place-items: center; font-size: 15px; letter-spacing: 0.06em; flex: none; }
-.mark-name { font-size: 1.15rem; font-variant: small-caps; letter-spacing: 0.12em; }
+.mark-name { font-family: var(--bodoni); font-size: 0.95rem; letter-spacing: 0.2em; line-height: 1.35; }
+.abacus { color: var(--ink); flex: none; display: block; }
+.abacus .acc { fill: var(--citron); }
+.hero .abacus { width: clamp(84px, 14vw, 120px); height: auto; }
 nav.main ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 26px; font-variant: small-caps; letter-spacing: 0.1em; font-size: 1rem; }
 nav.main a { text-decoration: none; padding-block: 10px; display: inline-block; color: var(--muted); }
 nav.main a[aria-current="page"] { color: var(--ink); border-bottom: 1px solid var(--ink); }
@@ -68,6 +78,13 @@ p { margin: 0; }
 
 .block { padding-block: 56px; border-bottom: 1px solid var(--rule); display: grid; gap: 32px; }
 .block:last-child { border-bottom: 0; }
+/* Dark look: alternate sections sit on a lifted slate band running edge to edge inside the frame. */
+.hero, .block { border-bottom-color: var(--rule-strong); }
+.view > .block:nth-of-type(even) { background: var(--band); margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad);
+  border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); margin-top: -1px; }
+.view > .stack { padding-bottom: 56px; }
+.view > .stack > .lede + .lede { margin-top: -10px; }
+.view > .block:nth-of-type(even) .cd { stroke: var(--band); }
 .head { display: grid; gap: 10px; }
 
 /* Four practice areas, two by two */
@@ -168,6 +185,7 @@ nav.main a { position: relative; }
 nav.main a[aria-current="page"] { border-bottom: 0; }
 nav.main a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
 nav.main a:hover::after, nav.main a[aria-current="page"]::after { transform: scaleX(1); }
+nav.main a[aria-current="page"]::after { background: var(--citron); }
 nav.main a:hover { color: var(--ink); }
 .seal { transition: transform .4s ease, text-shadow .4s ease, box-shadow .4s ease; }
 .mark:hover .seal { transform: translateY(-1px); box-shadow: 0 1px 0 var(--hi), 0 -1px 0 rgba(30,35,40,0.08) inset; text-shadow: -1px -1px 0 rgba(30,35,40,0.45), 1px 1px 0 var(--hi), 0 0 1px var(--lo); }
@@ -197,8 +215,8 @@ html.motion .faq details[open] p { animation: faq-in .35s ease; }
 
 <header class="top">
   <a class="mark" href="#home" aria-label="Bleecker Counting House, home">
-    <span class="seal emboss" aria-hidden="true">BCH</span>
-    <span class="mark-name">Bleecker Counting House</span>
+    <svg class="abacus" viewBox="0 0 100 100" width="46" height="46" aria-hidden="true"><rect x="12" y="18" width="76" height="64" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="34" x2="88" y2="34" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="50" x2="88" y2="50" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="66" x2="88" y2="66" stroke="currentColor" stroke-width="1.4"/><line x1="40" y1="18" x2="40" y2="82" stroke="currentColor" stroke-width="2"/><ellipse cx="22" cy="34" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="47" cy="34" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="59" cy="34" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="22" cy="50" rx="6" ry="5.5" fill="currentColor"/><ellipse class="acc" cx="78" cy="50" rx="6" ry="5.5"/><ellipse cx="47" cy="66" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="59" cy="66" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="71" cy="66" rx="6" ry="5.5" fill="currentColor"/></svg>
+    <span class="mark-name">BLEECKER<br>COUNTING HOUSE</span>
   </a>
   <nav class="main" aria-label="Main">
     <ul>
@@ -215,7 +233,7 @@ html.motion .faq details[open] p { animation: faq-in .35s ease; }
 <!-- HOME -->
 <section class="view" id="view-home" data-name="home" aria-label="Home">
   <div class="hero">
-    <div class="big-seal emboss" aria-hidden="true">BCH</div>
+    <svg class="abacus" viewBox="0 0 100 100" width="120" height="120" aria-hidden="true"><rect x="12" y="18" width="76" height="64" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="34" x2="88" y2="34" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="50" x2="88" y2="50" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="66" x2="88" y2="66" stroke="currentColor" stroke-width="1.4"/><line x1="40" y1="18" x2="40" y2="82" stroke="currentColor" stroke-width="2"/><ellipse cx="22" cy="34" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="47" cy="34" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="59" cy="34" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="22" cy="50" rx="6" ry="5.5" fill="currentColor"/><ellipse class="acc" cx="78" cy="50" rx="6" ry="5.5"/><ellipse cx="47" cy="66" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="59" cy="66" rx="6" ry="5.5" fill="currentColor"/><ellipse cx="71" cy="66" rx="6" ry="5.5" fill="currentColor"/></svg>
     <p class="eyebrow">Data &amp; reporting · Bleecker Street, New York</p>
     <h1>Reporting, data and operational systems for established firms</h1>
     <p class="lede">We consolidate a firm's accounting, project and client records, issue periodic reports from them, and build supporting systems for routine work. All reported figures are reconciled to the general ledger.</p>
