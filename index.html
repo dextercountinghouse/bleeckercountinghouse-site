@@ -14,24 +14,24 @@
 <style>
 /* Layout: a single framed sheet, like a card stock page with a silver double rule; views switch inside the frame. */
 :root {
-  --ground: #0E1A1F;
-  --sheet: #13232B;
-  --ink: #F2F4F5;
-  --ink-2: #C6D5DA;
-  --muted: #8BA3AD;
-  --silver: #557380;
-  --rule: #263C47;
-  --rule-strong: #375361;
-  --band: #1A2E38;
-  --hi: rgba(255,255,255,0.10);
-  --lo: rgba(0,0,0,0.55);
-  --emboss: #182B34;
-  --btn-fg: #1E2328;
-  --citron: #DCE29B;
+  --ground: #F2F4F5;
+  --sheet: #F6F7F8;
+  --ink: #1E2328;
+  --ink-2: #3E4650;
+  --muted: #59626C;
+  --silver: #A9B0B7;
+  --rule: #CDD2D7;
+  --hi: rgba(255,255,255,0.95);
+  --lo: rgba(30,35,40,0.34);
+  --emboss: #EDEFF1;
+  --btn-fg: #F2F4F5;
+  --citron: #CFD88A;
+  --bead: #BFCB5E;
+  --wash: #EEF0D6;
   --bodoni: 'Bodoni Moda', 'Didot', 'Bodoni 72', serif;
   --serif: 'EB Garamond', Garamond, 'Iowan Old Style', 'Times New Roman', serif;
 }
-:root { color-scheme: dark; } /* single dark look by choice: slate ground, silver rules, one citron accent */
+:root { color-scheme: light; } /* single light look by choice: cool pale card stock in every theme */
 
 body { background: var(--ground); color: var(--ink); font-family: var(--serif); font-size: 19px; line-height: 1.55;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px; }
@@ -40,7 +40,7 @@ a:hover { text-decoration-color: var(--ink); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 .frame { max-width: 1080px; margin: 0 auto; border: 1px solid var(--silver); padding: 6px; background: var(--sheet); }
-.inner { --pad: clamp(18px, 5vw, 64px); border: 0.5px solid var(--rule); padding-inline: var(--pad); }
+.inner { border: 0.5px solid var(--rule); padding-inline: clamp(18px, 5vw, 64px); }
 
 .smallcaps { font-variant: small-caps; letter-spacing: 0.14em; }
 .eyebrow { font-variant: small-caps; letter-spacing: 0.22em; color: var(--muted); font-size: 0.85rem; margin: 0; }
@@ -78,13 +78,6 @@ p { margin: 0; }
 
 .block { padding-block: 56px; border-bottom: 1px solid var(--rule); display: grid; gap: 32px; }
 .block:last-child { border-bottom: 0; }
-/* Dark look: alternate sections sit on a lifted slate band running edge to edge inside the frame. */
-.hero, .block { border-bottom-color: var(--rule-strong); }
-.view > .block:nth-of-type(even) { background: var(--band); margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad);
-  border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); margin-top: -1px; }
-.view > .stack { padding-bottom: 56px; }
-.view > .stack > .lede + .lede { margin-top: -10px; }
-.view > .block:nth-of-type(even) .cd { stroke: var(--band); }
 .head { display: grid; gap: 10px; }
 
 /* Four practice areas, two by two */
@@ -185,7 +178,6 @@ nav.main a { position: relative; }
 nav.main a[aria-current="page"] { border-bottom: 0; }
 nav.main a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
 nav.main a:hover::after, nav.main a[aria-current="page"]::after { transform: scaleX(1); }
-nav.main a[aria-current="page"]::after { background: var(--citron); }
 nav.main a:hover { color: var(--ink); }
 .seal { transition: transform .4s ease, text-shadow .4s ease, box-shadow .4s ease; }
 .mark:hover .seal { transform: translateY(-1px); box-shadow: 0 1px 0 var(--hi), 0 -1px 0 rgba(30,35,40,0.08) inset; text-shadow: -1px -1px 0 rgba(30,35,40,0.45), 1px 1px 0 var(--hi), 0 0 1px var(--lo); }
@@ -205,6 +197,33 @@ html.motion .faq details[open] p { animation: faq-in .35s ease; }
 @keyframes faq-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Piping: a drawn pipe network joins the four practice areas; one citron bead travels through it. */
+.quad, #view-practice { position: relative; }
+.quad.piped > .area { border-top-color: transparent; }
+#view-practice .block .stack:has(> .numeral) { padding-left: clamp(16px, 3vw, 36px); gap: 6px; }
+@media (min-width: 760px) { #view-practice .block .two:has(> .stack > .numeral) { grid-template-columns: minmax(250px, 0.75fr) minmax(0, 1.5fr); column-gap: 40px; } }
+.pipes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+.quad > .area, #view-practice > :not(.pipes) { position: relative; z-index: 1; }
+.pipes .wall { fill: none; stroke: var(--silver); stroke-width: 7; stroke-linejoin: round; }
+.pipes .bore { fill: none; stroke: var(--sheet); stroke-width: 4; stroke-linejoin: round; }
+.pipes .flange { fill: var(--sheet); stroke: var(--silver); stroke-width: 1; }
+.pipes .valve { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.2; }
+.pipes .bead { fill: var(--bead); }
+/* Citron appears on interaction only. */
+.abacus .acc { transition: transform .6s cubic-bezier(.3,.7,.2,1); }
+.mark:hover .abacus .acc, .mark:focus-visible .abacus .acc { transform: translateX(-26px); }
+nav.main a:not([aria-current="page"])::after { background: var(--bead); height: 2px; }
+a:not(.btn):not(.mark):not(nav.main a):hover { text-decoration-color: var(--bead); text-decoration-thickness: 2px; }
+.btn { transition: background-color .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.btn.line:hover { background: var(--wash); border-color: var(--bead); }
+.btn.solid:hover { box-shadow: inset 0 -3px 0 var(--citron); }
+.hit:hover .cd, .hit:hover .cb { fill: var(--bead); }
+.faq summary:hover::after, .faq details[open] summary::after { color: var(--bead); }
+.faq summary::after { transition: transform .3s ease, color .3s ease; }
+.pipes .draw { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: pipe-draw 1.6s ease forwards; }
+@keyframes pipe-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .pipes .draw { animation: none; stroke-dashoffset: 0; } .pipes .bead { display: none; } }
 </style>
 </head>
 <body>
@@ -544,6 +563,76 @@ html.motion .faq details[open] p { animation: faq-in .35s ease; }
   }
 })();
 </script>
+<script>
+/* Piping network: drawn from the live layout, redrawn on resize and when the view changes. */
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  function rel(r, box) { return { l: r.left - box.left, t: r.top - box.top, r: r.right - box.left, b: r.bottom - box.top, cx: (r.left + r.right) / 2 - box.left, cy: (r.top + r.bottom) / 2 - box.top }; }
+  function round(n) { return Math.round(n * 2) / 2; }
+  // segs: list of path strings; flanges: [x,y,'h'|'v']; valves: [x,y]; flow: list of path strings a bead travels
+  function draw(host, segs, flanges, valves, flow) {
+    var old = host.querySelector(':scope > .pipes'); if (old) old.remove();
+    var svg = el('svg', { class: 'pipes', 'aria-hidden': 'true' });
+    host.insertBefore(svg, host.firstChild);
+    var walls = el('g', {}, svg), bores = el('g', {}, svg), fit = el('g', {}, svg), beads = el('g', {}, svg);
+    var first = !host.dataset.drawn;
+    segs.forEach(function (d) {
+      var w = el('path', { d: d, class: 'wall' }, walls), b = el('path', { d: d, class: 'bore' }, bores);
+      if (first && !reduce) { var L = Math.ceil(w.getTotalLength()) + 2; [w, b].forEach(function (p) { p.style.setProperty('--len', L); p.classList.add('draw'); }); }
+    });
+    flanges.forEach(function (f) { var v = f[2] === 'v'; el('rect', { class: 'flange' + (f[3] ? ' ' + f[3] : ''), x: f[0] - (v ? 2 : 6.5), y: f[1] - (v ? 6.5 : 2), width: v ? 4 : 13, height: v ? 13 : 4 }, fit); });
+    valves.forEach(function (v) { el('circle', { class: 'valve', cx: v[0], cy: v[1], r: 5.5 }, fit); el('line', { x1: v[0] - 3.2, y1: v[1], x2: v[0] + 3.2, y2: v[1], stroke: 'var(--ink)', 'stroke-width': 1.2 }, fit); });
+    if (!reduce) flow.forEach(function (d, i) {
+      var c = el('circle', { class: 'bead', r: 2.4, cx: 0, cy: 0 }, beads);
+      var m = el('animateMotion', { dur: (7 + i * 1.3) + 's', begin: (first ? 1.8 : 0) + i * 1.1 + 's', repeatCount: 'indefinite', path: d, calcMode: 'linear' }, c);
+    });
+    host.dataset.drawn = '1';
+  }
+  function quad() {
+    var q = document.querySelector('#view-home .quad'); if (!q || !q.offsetParent) return;
+    q.classList.add('piped');
+    var box = q.getBoundingClientRect(), a = [].slice.call(q.children).map(function (c) { return rel(c.getBoundingClientRect(), box); });
+    if (a.length !== 4) return;
+    var y1 = round(a[0].t), y2 = round(a[2].t), segs, fl, va, flow;
+    if (Math.abs(a[0].t - a[1].t) < 2) {           // two columns: a tee network
+      var x0 = round(a[0].l), x1 = round(a[1].r), xg = round((a[0].r + a[1].l) / 2);
+      segs = ['M' + x0 + ' ' + y1 + 'H' + x1, 'M' + xg + ' ' + y1 + 'V' + y2, 'M' + x0 + ' ' + y2 + 'H' + x1];
+      fl = [[x0, y1, 'v'], [x1, y1, 'v'], [x0, y2, 'v'], [x1, y2, 'v']];
+      va = [[xg, round((y1 + y2) / 2)]];
+      flow = ['M' + x0 + ' ' + y1 + 'H' + x1, 'M' + x0 + ' ' + y1 + 'H' + xg + 'V' + y2 + 'H' + x0, 'M' + x0 + ' ' + y1 + 'H' + xg + 'V' + y2 + 'H' + x1];
+    } else {                                         // one column: a spine down the left edge
+      var xs = round(a[0].l - 12), yb = round(a[3].t), sp = 'M' + xs + ' ' + y1 + 'V' + yb;
+      segs = [sp]; fl = []; va = [];
+      a.forEach(function (r) { var y = round(r.t); segs.push('M' + xs + ' ' + y + 'H' + round(r.l + 40)); fl.push([round(r.l + 40), y, 'v']); });
+      flow = [sp];
+    }
+    draw(q, segs, fl, va, flow);
+  }
+  function practice() {
+    var v = document.getElementById('view-practice'); if (!v || v.hidden) return;
+    var box = v.getBoundingClientRect(), stacks = [].slice.call(v.querySelectorAll('.block .numeral')).map(function (n) { return rel(n.parentElement.getBoundingClientRect(), box); }), nums = [].slice.call(v.querySelectorAll('.block .numeral')).map(function (n) { var h = n.parentElement.querySelector('h2') || n, r = rel(h.getBoundingClientRect(), box), fs = parseFloat(getComputedStyle(h).fontSize); r.cy = r.cy - fs * 0.07; return r; });
+    if (nums.length !== 4) return;
+    var inner = v.closest('.inner'), cs = getComputedStyle(inner), pad = parseFloat(cs.paddingLeft);
+    var xs = round(stacks[0].l - Math.max(9, Math.min(pad / 2, 30)) ), segs = [], fl = [], va = [];
+    var ys = nums.map(function (n) { return round(n.cy); });
+    var spine = 'M' + xs + ' ' + ys[0] + 'V' + ys[3];
+    segs.push(spine);
+    ys.forEach(function (y, i) { var xe = round(nums[i].l - 12); segs.push('M' + xs + ' ' + y + 'H' + xe); fl.push([xe, y, 'v']); });
+    for (var i = 0; i < 3; i++) va.push([xs, round((ys[i] + ys[i + 1]) / 2)]);
+    draw(v, segs, fl, va, [spine]);
+  }
+  function all() { quad(); practice(); }
+  var t; function soon() { clearTimeout(t); t = setTimeout(all, 120); }
+  window.addEventListener('resize', soon);
+  window.addEventListener('hashchange', function () { setTimeout(all, 60); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(all);
+  window.addEventListener('load', all);
+  if ('ResizeObserver' in window) { var ro = new ResizeObserver(soon); document.querySelectorAll('.inner').forEach(function (e) { ro.observe(e); }); }
+})();
+</script>
+
 
 </body>
 </html>
