@@ -201,7 +201,10 @@ html.motion .faq details[open] p { animation: faq-in .35s ease; }
 /* Piping: a drawn pipe network joins the four practice areas; one citron bead travels through it. */
 .quad, #view-practice { position: relative; }
 .quad.piped > .area { border-top-color: transparent; }
-#view-practice .block .stack:has(> .numeral) { padding-left: clamp(16px, 3vw, 36px); gap: 6px; }
+#view-practice .block .stack:has(> .numeral) { padding-left: clamp(30px, 3vw, 36px); gap: 6px; }
+.quad.piped > .area { padding-left: 30px; }
+@media (max-width: 759px) { #view-practice > .block { padding-left: 28px; } #view-practice .block .stack:has(> .numeral) { padding-left: 12px; } }
+.quad.piped { row-gap: 8px; }
 @media (min-width: 760px) { #view-practice .block .two:has(> .stack > .numeral) { grid-template-columns: minmax(250px, 0.75fr) minmax(0, 1.5fr); column-gap: 40px; } }
 .pipes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
 .quad > .area, #view-practice > :not(.pipes) { position: relative; z-index: 1; }
@@ -570,6 +573,8 @@ a:not(.btn):not(.mark):not(nav.main a):hover { text-decoration-color: var(--bead
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
   function rel(r, box) { return { l: r.left - box.left, t: r.top - box.top, r: r.right - box.left, b: r.bottom - box.top, cx: (r.left + r.right) / 2 - box.left, cy: (r.top + r.bottom) / 2 - box.top }; }
+  function pos(el, host) { var x = 0, y = 0, e = el; while (e && e !== host) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+    var w = el.offsetWidth, h = el.offsetHeight; return { l: x, t: y, r: x + w, b: y + h, cx: x + w / 2, cy: y + h / 2 }; }
   function round(n) { return Math.round(n * 2) / 2; }
   // segs: list of path strings; flanges: [x,y,'h'|'v']; valves: [x,y]; flow: list of path strings a bead travels
   function draw(host, segs, flanges, valves, flow) {
@@ -593,29 +598,38 @@ a:not(.btn):not(.mark):not(nav.main a):hover { text-decoration-color: var(--bead
   function quad() {
     var q = document.querySelector('#view-home .quad'); if (!q || !q.offsetParent) return;
     q.classList.add('piped');
-    var box = q.getBoundingClientRect(), a = [].slice.call(q.children).map(function (c) { return rel(c.getBoundingClientRect(), box); });
-    if (a.length !== 4) return;
-    var y1 = round(a[0].t), y2 = round(a[2].t), segs, fl, va, flow;
-    if (Math.abs(a[0].t - a[1].t) < 2) {           // two columns: a tee network
-      var x0 = round(a[0].l), x1 = round(a[1].r), xg = round((a[0].r + a[1].l) / 2);
-      segs = ['M' + x0 + ' ' + y1 + 'H' + x1, 'M' + xg + ' ' + y1 + 'V' + y2, 'M' + x0 + ' ' + y2 + 'H' + x1];
-      fl = [[x0, y1, 'v'], [x1, y1, 'v'], [x0, y2, 'v'], [x1, y2, 'v']];
-      va = [[xg, round((y1 + y2) / 2)]];
-      flow = ['M' + x0 + ' ' + y1 + 'H' + x1, 'M' + x0 + ' ' + y1 + 'H' + xg + 'V' + y2 + 'H' + x0, 'M' + x0 + ' ' + y1 + 'H' + xg + 'V' + y2 + 'H' + x1];
-    } else {                                         // one column: a spine down the left edge
-      var xs = round(a[0].l - 12), yb = round(a[3].t), sp = 'M' + xs + ' ' + y1 + 'V' + yb;
-      segs = [sp]; fl = []; va = [];
-      a.forEach(function (r) { var y = round(r.t); segs.push('M' + xs + ' ' + y + 'H' + round(r.l + 40)); fl.push([round(r.l + 40), y, 'v']); });
-      flow = [sp];
+    var box = { width: q.offsetWidth }, cells = [].slice.call(q.children); if (cells.length !== 4) return;
+    var pts = cells.map(function (c) {
+      var h = c.querySelector('h3') || c, r = pos(c, q), hr = pos(h, q), fs = parseFloat(getComputedStyle(h).fontSize);
+      return { x: round(r.l + 7), top: round(r.t), y: round(hr.cy - fs * 0.07), xe: round(hr.l - 10) };
+    });
+    var cols = {}; pts.forEach(function (p) { (cols[p.x] = cols[p.x] || []).push(p); });
+    var xs = Object.keys(cols).map(Number).sort(function (m, n) { return m - n; });
+    var segs = [], fl = [], va = [], flow = [];
+    var last = function (x) { var c = cols[x]; return c[c.length - 1].y; };
+    if (xs.length > 1) {                       // two columns: a header main above the grid, one riser per column
+      var x1 = xs[0], x2 = xs[xs.length - 1], ym = round(pts[0].top + 4), xm = round(Math.min(Math.max(box.width / 2, x1 + 20), x2 - 20));
+      segs.push('M' + x1 + ' ' + last(x1) + 'V' + ym + 'H' + x2 + 'V' + last(x2));
+      segs.push('M' + xm + ' ' + ym + 'V' + round(ym - 24)); fl.push([xm, round(ym - 24), 'h']);
+      flow = ['M' + xm + ' ' + round(ym - 24) + 'V' + ym + 'H' + x1 + 'V' + last(x1), 'M' + xm + ' ' + round(ym - 24) + 'V' + ym + 'H' + x2 + 'V' + last(x2)];
+    } else {                                   // one column: a single riser
+      var x = xs[0], y0 = round(pts[0].top + 4);
+      segs.push('M' + x + ' ' + y0 + 'V' + last(x)); fl.push([x, y0, 'h']);
+      flow = ['M' + x + ' ' + y0 + 'V' + last(x)];
     }
+    xs.forEach(function (x) {
+      var c = cols[x];
+      c.forEach(function (p) { segs.push('M' + x + ' ' + p.y + 'H' + p.xe); fl.push([p.xe, p.y, 'v']); });
+      for (var i = 0; i < c.length - 1; i++) va.push([x, round((c[i].y + c[i + 1].y) / 2)]);
+    });
     draw(q, segs, fl, va, flow);
   }
   function practice() {
     var v = document.getElementById('view-practice'); if (!v || v.hidden) return;
-    var box = v.getBoundingClientRect(), stacks = [].slice.call(v.querySelectorAll('.block .numeral')).map(function (n) { return rel(n.parentElement.getBoundingClientRect(), box); }), nums = [].slice.call(v.querySelectorAll('.block .numeral')).map(function (n) { var h = n.parentElement.querySelector('h2') || n, r = rel(h.getBoundingClientRect(), box), fs = parseFloat(getComputedStyle(h).fontSize); r.cy = r.cy - fs * 0.07; return r; });
+    var stacks = [].slice.call(v.querySelectorAll('.block .numeral')).map(function (n) { return pos(n.parentElement, v); }), nums = [].slice.call(v.querySelectorAll('.block .numeral')).map(function (n) { var h = n.parentElement.querySelector('h2') || n, r = pos(h, v), fs = parseFloat(getComputedStyle(h).fontSize); r.cy = r.cy - fs * 0.07; return r; });
     if (nums.length !== 4) return;
     var inner = v.closest('.inner'), cs = getComputedStyle(inner), pad = parseFloat(cs.paddingLeft);
-    var xs = round(stacks[0].l - Math.max(9, Math.min(pad / 2, 30)) ), segs = [], fl = [], va = [];
+    var xs = round(pad < 40 ? stacks[0].l - 21 : stacks[0].l - Math.min(pad / 2, 30)), segs = [], fl = [], va = [];
     var ys = nums.map(function (n) { return round(n.cy); });
     var spine = 'M' + xs + ' ' + ys[0] + 'V' + ys[3];
     segs.push(spine);
@@ -629,6 +643,7 @@ a:not(.btn):not(.mark):not(nav.main a):hover { text-decoration-color: var(--bead
   window.addEventListener('hashchange', function () { setTimeout(all, 60); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(all);
   window.addEventListener('load', all);
+  document.addEventListener('transitionend', function (e) { if (e.target.closest && e.target.closest('.quad, #view-practice') && !e.target.closest('.pipes')) soon(); });
   if ('ResizeObserver' in window) { var ro = new ResizeObserver(soon); document.querySelectorAll('.inner').forEach(function (e) { ro.observe(e); }); }
 })();
 </script>
