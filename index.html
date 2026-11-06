@@ -598,7 +598,7 @@ a:not(.btn):not(.mark):not(nav.main a):hover { text-decoration-color: var(--bead
   function quad() {
     var q = document.querySelector('#view-home .quad'); if (!q || !q.offsetParent) return;
     q.classList.add('piped');
-    var box = { width: q.offsetWidth }, cells = [].slice.call(q.children); if (cells.length !== 4) return;
+    var box = { width: q.offsetWidth }, cells = [].slice.call(q.children).filter(function (c) { return c.classList.contains('area'); }); if (cells.length !== 4) return;
     var pts = cells.map(function (c) {
       var h = c.querySelector('h3') || c, r = pos(c, q), hr = pos(h, q), fs = parseFloat(getComputedStyle(h).fontSize);
       return { x: round(r.l + 7), top: round(r.t), y: round(hr.cy - fs * 0.07), xe: round(hr.l - 10) };
